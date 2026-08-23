@@ -2,9 +2,140 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HVAC Rightsizing — Brad Machado</title>
-<!-- SCAFFOLD: page pending. Built in Phase 2 from the Research artboard and content-harvest.md. -->
+<meta name="description" content="A data pipeline estimating peak heating and cooling loads for roughly 130 million U.S. residential building records, built by aligning property data with the ResStock housing-stock energy model from the National Laboratory of the Rockies.">
+<link rel="canonical" href="https://bradmachado.com/hvac-rightsizing/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+
+<header class="site-header">
+  <div class="container site-header__bar">
+    <a href="/" class="logo">Brad Machado</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/#work">Work</a>
+      <a href="/#research" aria-current="page">Research</a>
+      <a href="/about/">About</a>
+      <a href="/resume/">Resume</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <header class="page-header">
+      <span class="eyebrow">Research / R.01</span>
+      <div class="page-header__top">
+        <h1 class="page-header__title">HVAC Rightsizing</h1>
+        <span class="page-header__date">2025–26</span>
+      </div>
+      <p class="page-header__thesis">A data pipeline estimating peak heating and cooling loads for roughly 130 million U.S. residential building records, built by aligning property data with the ResStock housing-stock energy model from the National Laboratory of the Rockies (formerly NREL).</p>
+    </header>
+
+    <dl class="spec-block">
+      <div><dt>Partner</dt><dd>[Research partner — Brad to confirm: name, or keep anonymized]</dd></div>
+      <div><dt>Role</dt><dd>Dataset review, harmonization, stratification</dd></div>
+      <div><dt>Stack</dt><dd>Databricks · SQL · Python</dd></div>
+      <div><dt>Scale</dt><dd>~130M records · EnergyPlus-derived loads</dd></div>
+    </dl>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 970 250" role="img" aria-labelledby="r01-diagram-title r01-diagram-desc" xmlns="http://www.w3.org/2000/svg">
+        <title id="r01-diagram-title">HVAC rightsizing load-transfer pipeline</title>
+        <desc id="r01-diagram-desc">Property records and the ResStock energy model feed into harmonization, then stratification, then load transfer, producing peak heating and cooling loads per property. A dashed imputation step feeds into load transfer to fill missing attributes.</desc>
+        <defs>
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#B0431F" />
+          </marker>
+        </defs>
+
+        <!-- connectors -->
+        <line x1="180" y1="45"  x2="210" y2="85" class="diagram-arrow" marker-end="url(#arrowhead)" />
+        <line x1="180" y1="125" x2="210" y2="85" class="diagram-arrow" marker-end="url(#arrowhead)" />
+        <line x1="360" y1="85"  x2="390" y2="85" class="diagram-arrow" marker-end="url(#arrowhead)" />
+        <line x1="560" y1="85"  x2="590" y2="85" class="diagram-arrow" marker-end="url(#arrowhead)" />
+        <line x1="760" y1="85"  x2="790" y2="85" class="diagram-arrow" marker-end="url(#arrowhead)" />
+        <line x1="675" y1="180" x2="675" y2="115" class="diagram-arrow" marker-end="url(#arrowhead)" />
+
+        <!-- Property records -->
+        <rect x="10" y="20" width="170" height="50" class="diagram-box" />
+        <text x="95" y="39" text-anchor="middle" class="diagram-label">PROPERTY RECORDS</text>
+        <text x="95" y="55" text-anchor="middle" class="diagram-sublabel">~130M U.S. RESIDENTIAL</text>
+
+        <!-- ResStock -->
+        <rect x="10" y="100" width="170" height="50" class="diagram-box" />
+        <text x="95" y="119" text-anchor="middle" class="diagram-label">RESSTOCK ENERGY MODEL</text>
+        <text x="95" y="135" text-anchor="middle" class="diagram-sublabel">ENERGYPLUS PEAK LOADS</text>
+
+        <!-- Harmonization -->
+        <rect x="210" y="55" width="150" height="60" class="diagram-box" />
+        <text x="285" y="79" text-anchor="middle" class="diagram-label">HARMONIZATION</text>
+        <text x="285" y="97" text-anchor="middle" class="diagram-sublabel">SQL / DATABRICKS</text>
+
+        <!-- Stratification -->
+        <rect x="390" y="55" width="170" height="60" class="diagram-box" />
+        <text x="475" y="79" text-anchor="middle" class="diagram-label">STRATIFICATION</text>
+        <text x="475" y="97" text-anchor="middle" class="diagram-sublabel">COVERAGE-VERIFIED STRATA</text>
+
+        <!-- Load transfer -->
+        <rect x="590" y="55" width="170" height="60" class="diagram-box" />
+        <text x="675" y="79" text-anchor="middle" class="diagram-label">LOAD TRANSFER</text>
+        <text x="675" y="97" text-anchor="middle" class="diagram-sublabel">MATCH + PYTHON MODEL</text>
+
+        <!-- Peak loads output -->
+        <rect x="790" y="55" width="170" height="60" class="diagram-box" />
+        <text x="875" y="79" text-anchor="middle" class="diagram-label">PEAK LOADS (kW)</text>
+        <text x="875" y="97" text-anchor="middle" class="diagram-sublabel">PER PROPERTY RECORD</text>
+
+        <!-- Imputation (fallback path) -->
+        <rect x="590" y="180" width="170" height="50" class="diagram-box diagram-box--dashed" />
+        <text x="675" y="199" text-anchor="middle" class="diagram-label">IMPUTATION</text>
+        <text x="675" y="215" text-anchor="middle" class="diagram-sublabel">CONDITIONAL SAMPLING</text>
+      </svg>
+      <figcaption>Fig. 01 — Load-transfer pipeline. Dashed: fallback path for missing attributes.</figcaption>
+    </figure>
+
+    <div class="section-head">
+      <span class="section-head__title">01 / Method</span>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Harmonization</span>
+      <p class="field-row__content">Variables overlapping between the two datasets are identified and inventoried. Units are standardized and categorical values are harmonized to ensure structural consistency across the database.</p>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Stratification</span>
+      <p class="field-row__content">A key stratification scheme is defined for downstream estimation. Sample coverage is verified to ensure each stratum has a sufficient number of ResStock samples.</p>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Load Transfer</span>
+      <p class="field-row__content">Multiple load transfer methods are evaluated, utilizing a hybrid approach. Records are first matched within key strata, then a predictive Python model is deployed within each stratum to improve accuracy and prevent unrealistic extrapolation. Missing information is addressed using the laboratory's conditional distributions, sampled from each property's observed characteristics.</p>
+    </div>
+
+    <div class="section-head">
+      <span class="section-head__title">02 / Contribution</span>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">My Role</span>
+      <p class="field-row__content">Reviewing datasets, harmonization of the two sets, and stratification of the combined set — scripted in SQL and Python on Databricks, using AI-assisted development.</p>
+    </div>
+
+    <div class="next-link">
+      <span class="field-label">Next Research</span>
+      <a href="/aem-surveying-for-water-security/"><span class="next-link__title">AEM Surveying for Water Security →</span></a>
+    </div>
+
+  </div>
+</main>
+
 </body>
 </html>
