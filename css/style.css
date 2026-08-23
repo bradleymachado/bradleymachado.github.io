@@ -284,6 +284,53 @@ figcaption,
 }
 
 /* ==========================================================================
+   Case-study / research figures (full-width images, pairs, pending assets)
+   ========================================================================== */
+
+.figure {
+  margin-top: 40px;
+}
+
+.figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.figure-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-top: 40px;
+}
+
+@media (max-width: 900px) {
+  .figure-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* Placeholder box for a figure slot the template calls for but img/ doesn't
+   yet have an asset for — same fill token as homepage card placeholders. */
+.figure-pending {
+  aspect-ratio: 16 / 10;
+  background: var(--color-placeholder);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.figure-pending__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-faint);
+  line-height: 1.6;
+  max-width: 32ch;
+}
+
+/* ==========================================================================
    Work grid (homepage project cards)
    ========================================================================== */
 
