@@ -1,0 +1,594 @@
+/* ==========================================================================
+   Brad Machado — Portfolio 2026
+   Single shared stylesheet. No framework, no build step.
+   Design tokens per BUILD-PLAN.md Section 2. Requires IBM Plex Mono loaded
+   via <link> in each page's <head> (Google Fonts) — see index.html.
+   ========================================================================== */
+
+:root {
+  /* Color tokens */
+  --color-bg:          #FCFCFA; /* warm white */
+  --color-ink:         #171715; /* headings, body text */
+  --color-body:        #4A4A46; /* paragraph copy */
+  --color-muted:       #6B6B67; /* secondary meta */
+  --color-faint:       #98978F; /* captions, faintest meta */
+  --color-hairline:    #E4E3DF; /* 1px dividers */
+  --color-placeholder: #ECEBE7; /* image placeholder fill */
+  --color-accent:      #B0431F; /* oxide red — the only hue on the site */
+
+  /* Type */
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Layout */
+  --page-max: 1440px;
+  --side-margin: 72px;
+  --side-margin-mobile: 24px;
+  --rule-thick: 2px;
+  --rule-thin: 1px;
+
+  /* Motion / misc */
+  --transition-fast: 150ms ease;
+}
+
+/* ==========================================================================
+   Reset
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body, h1, h2, h3, h4, p, figure, ul, ol, dl, dd {
+  margin: 0;
+}
+
+ul, ol { padding: 0; list-style: none; }
+
+img, svg { display: block; max-width: 100%; }
+
+a { color: inherit; text-decoration: none; }
+
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Consistent focus visibility without introducing shadows/rounding */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 1px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+a[href] { transition: color var(--transition-fast); }
+a[href]:hover { color: var(--color-accent); }
+
+/* ==========================================================================
+   Layout primitives
+   ========================================================================== */
+
+.container {
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--side-margin);
+}
+
+@media (max-width: 900px) {
+  .container { padding-inline: var(--side-margin-mobile); }
+}
+
+/* 2px ink rule that opens each numbered section, e.g. "01 / Selected Work" */
+.section-head {
+  border-top: var(--rule-thick) solid var(--color-ink);
+  padding-top: 16px;
+  margin-top: 96px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 24px;
+}
+
+.section-head:first-of-type { margin-top: 64px; }
+
+.section-head__title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-accent);
+}
+
+.section-head__meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-faint);
+}
+
+/* 1px hairline row divider (research list, experience list, etc.) */
+.hairline-row {
+  border-bottom: var(--rule-thin) solid var(--color-hairline);
+}
+
+/* ==========================================================================
+   Micro-labels & captions
+   ========================================================================== */
+
+/* Eyebrow: accent-colored micro-label — breadcrumbs, section markers */
+.eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-accent);
+}
+
+/* Field label: muted micro-label — spec-block / field-row headers */
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-faint);
+}
+
+/* Figure caption: "Fig. 01 — Description." */
+figcaption,
+.fig-caption {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-faint);
+  margin-top: 12px;
+}
+
+/* ==========================================================================
+   Header / nav
+   ========================================================================== */
+
+.site-header {
+  border-bottom: var(--rule-thin) solid var(--color-hairline);
+}
+
+.site-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+  padding-block: 24px;
+}
+
+.logo {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+}
+
+.nav a {
+  font-size: 14px;
+  color: var(--color-ink);
+}
+
+.nav a[aria-current="page"] {
+  color: var(--color-accent);
+}
+
+@media (max-width: 900px) {
+  .site-header__bar { flex-direction: column; align-items: flex-start; }
+  .nav { flex-direction: column; gap: 12px; width: 100%; }
+}
+
+/* ==========================================================================
+   Hero (homepage)
+   ========================================================================== */
+
+.hero {
+  padding-block: 56px 48px;
+}
+
+.hero__title {
+  font-size: clamp(2.25rem, 1.15rem + 4.6vw, 4rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  margin-top: 20px;
+  max-width: 18ch;
+}
+
+/* Two-column field row: label at left, content/paragraph at right.
+   Reused for PROFILE / METHOD / RESULT / MY ROLE / PARTNER etc. */
+.field-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 200px) 1fr;
+  gap: 24px 32px;
+  padding-block: 24px;
+}
+
+.field-row + .field-row {
+  border-top: var(--rule-thin) solid var(--color-hairline);
+}
+
+.field-row__content {
+  color: var(--color-body);
+  font-size: 17px;
+  line-height: 1.65;
+  max-width: 62ch;
+}
+
+@media (max-width: 900px) {
+  .field-row { grid-template-columns: 1fr; gap: 8px; }
+}
+
+/* ==========================================================================
+   Spec block — 4-column Type/Role/Tools/Status (or Partner/Role/Stack/Scale)
+   ========================================================================== */
+
+.spec-block {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding-block: 24px;
+  margin-top: 40px;
+  border-top: var(--rule-thin) solid var(--color-hairline);
+  border-bottom: var(--rule-thin) solid var(--color-hairline);
+}
+
+.spec-block dt {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-faint);
+  margin-bottom: 8px;
+}
+
+.spec-block dd {
+  font-size: 15px;
+  color: var(--color-ink);
+}
+
+@media (max-width: 900px) {
+  .spec-block { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 540px) {
+  .spec-block { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   Work grid (homepage project cards)
+   ========================================================================== */
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 64px 48px;
+  margin-top: 48px;
+}
+
+@media (max-width: 900px) {
+  .work-grid { grid-template-columns: 1fr; gap: 48px; }
+}
+
+.project-card__image {
+  aspect-ratio: 4 / 3;
+  background: var(--color-placeholder);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.project-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-card__placeholder-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-faint);
+}
+
+.project-card__heading {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.project-card__index {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+}
+
+.project-card__title {
+  font-size: 21px;
+  font-weight: 400;
+}
+
+.project-card__desc {
+  color: var(--color-body);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-top: 8px;
+  max-width: 46ch;
+}
+
+.project-card__tools {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-faint);
+  margin-top: 10px;
+}
+
+/* ==========================================================================
+   Research / list rows (homepage research rows, resume experience rows)
+   ========================================================================== */
+
+.list-row {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 8px 32px;
+  align-items: start;
+  padding-block: 28px;
+  border-bottom: var(--rule-thin) solid var(--color-hairline);
+}
+
+.list-row__index {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+}
+
+.list-row__title {
+  font-size: 19px;
+  font-weight: 400;
+}
+
+.list-row__desc {
+  color: var(--color-body);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-top: 6px;
+  max-width: 62ch;
+}
+
+.list-row__meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-faint);
+  text-align: right;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .list-row {
+    grid-template-columns: 1fr;
+  }
+  .list-row__meta { text-align: left; white-space: normal; }
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--color-ink);
+  padding: 14px 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-ink);
+}
+
+.btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* ==========================================================================
+   Diagram primitives (research SVG pipeline diagrams — accent arrows only)
+   ========================================================================== */
+
+.diagram { margin-top: 40px; }
+
+.diagram-box {
+  fill: var(--color-bg);
+  stroke: var(--color-ink);
+  stroke-width: 1;
+}
+
+.diagram-box--dashed {
+  stroke-dasharray: 4 4;
+  stroke: var(--color-muted);
+}
+
+.diagram-arrow {
+  stroke: var(--color-accent);
+  fill: none;
+  stroke-width: 1.5;
+  marker-end: url(#arrowhead);
+}
+
+.diagram-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  fill: var(--color-ink);
+}
+
+.diagram-sublabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  fill: var(--color-faint);
+}
+
+/* ==========================================================================
+   Footer / contact
+   ========================================================================== */
+
+.site-footer {
+  margin-top: 96px;
+  border-top: var(--rule-thick) solid var(--color-ink);
+  padding-block: 48px 24px;
+}
+
+.site-footer__title {
+  font-size: clamp(1.75rem, 1.15rem + 2.6vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.15;
+  max-width: 24ch;
+  margin-top: 16px;
+}
+
+.site-footer__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.site-footer__email {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--color-ink);
+}
+
+.site-footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .site-footer__links { text-align: left; }
+}
+
+.site-footer__colophon {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: var(--rule-thin) solid var(--color-hairline);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-faint);
+}
+
+/* ==========================================================================
+   Page header (case-study / research page titles)
+   ========================================================================== */
+
+.page-header {
+  padding-block: 56px 40px;
+}
+
+.page-header__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.page-header__title {
+  font-size: clamp(2rem, 1.2rem + 3.6vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  margin-top: 16px;
+}
+
+.page-header__date {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--color-faint);
+  white-space: nowrap;
+}
+
+.page-header__thesis {
+  color: var(--color-body);
+  font-size: 19px;
+  line-height: 1.6;
+  max-width: 66ch;
+  margin-top: 24px;
+}
+
+/* Next-project / next-research footer link */
+.next-link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-top: 96px;
+  padding-top: 24px;
+  border-top: var(--rule-thick) solid var(--color-ink);
+  padding-bottom: 64px;
+}
+
+.next-link__title {
+  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2rem);
+  font-weight: 400;
+}
+
+/* ==========================================================================
+   404
+   ========================================================================== */
+
+.error-page {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: 64px;
+}
