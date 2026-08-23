@@ -195,7 +195,8 @@ figcaption,
   color: var(--color-ink);
 }
 
-.nav a[aria-current="page"] {
+.nav a[aria-current="page"],
+.nav a.cta {
   color: var(--color-accent);
 }
 
