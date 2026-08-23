@@ -630,6 +630,71 @@ figcaption,
 }
 
 /* ==========================================================================
+   About / resume
+   ========================================================================== */
+
+.about-hero {
+  display: grid;
+  grid-template-columns: minmax(240px, 38%) 1fr;
+  gap: 64px;
+  padding-block: 56px 0;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .about-hero { grid-template-columns: 1fr; gap: 32px; }
+}
+
+.about-hero__content .eyebrow { margin-top: 0; }
+
+.about-hero__content .page-header__title {
+  margin-top: 16px;
+  font-size: clamp(1.75rem, 1.15rem + 2.6vw, 2.75rem);
+}
+
+.about-hero__content p {
+  color: var(--color-body);
+  font-size: 18px;
+  line-height: 1.65;
+  max-width: 60ch;
+  margin-top: 20px;
+}
+
+.about-hero__content .btn { margin-top: 32px; }
+
+.resume-title {
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--color-ink);
+}
+
+.resume-org {
+  font-size: 14px;
+  color: var(--color-muted);
+  margin-top: 2px;
+}
+
+.resume-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.resume-bullets li {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-body);
+}
+
+.about-closing {
+  border-top: var(--rule-thick) solid var(--color-ink);
+  margin-top: 96px;
+  padding-top: 24px;
+  padding-bottom: 64px;
+}
+
+/* ==========================================================================
    404
    ========================================================================== */
 
