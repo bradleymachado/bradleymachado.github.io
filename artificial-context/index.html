@@ -35,13 +35,13 @@
         <h1 class="page-header__title">Artificial Context</h1>
         <span class="page-header__date">2026</span>
       </div>
-      <p class="page-header__thesis">AI-assisted generative massing tested against existing urban fabric.</p>
+      <p class="page-header__thesis">Context extracted from a fine-tuned image model rather than from a site — a study in the absurdity of synthetic context.</p>
     </header>
 
     <dl class="spec-block">
       <div><dt>Type</dt><dd>Graduate design studio</dd></div>
       <div><dt>Role</dt><dd>Group project</dd></div>
-      <div><dt>Tools</dt><dd>Rhino · Grasshopper · AI Form-Finding</dd></div>
+      <div><dt>Tools</dt><dd>Grasshopper · Flux.1-dev LoRA · Karamba3D · Wallacei X · Ladybug · MATLAB · Blender</dd></div>
       <div><dt>Status</dt><dd>Completed studio project</dd></div>
     </dl>
 
@@ -56,7 +56,7 @@
 
     <div class="field-row">
       <span class="field-label">Method</span>
-      <p class="field-row__content">[METHOD — Brad to add: 2–3 sentences on the AI-assisted generative process — what tool or model was used, what constraints were set, and what the algorithm produced versus what you curated.]</p>
+      <p class="field-row__content">A Low-Rank Adaptation model was trained on site imagery gathered in Suseong-gu, Daegu, and applied to Flux.1-dev in ComfyUI, producing latent-space views of a city the base model had never seen. Those images are read as depth maps through the Grasshopper Image Sampler to generate topography, sectioned into 2D genotypes, and screened structurally in Karamba3D. Surviving genotypes are stacked, rotated, and lofted by Python script into volumetric phenotypes, optimized in Wallacei X and evaluated for solar response in Ladybug; a neural network trained in MATLAB on the resulting Pareto fronts. Facade, glazing, and structural shell were resolved in Blender.</p>
     </div>
 
     <div class="figure-grid">
@@ -92,7 +92,7 @@
 
     <div class="field-row">
       <span class="field-label">Result</span>
-      <p class="field-row__content">[RESULT — Brad to add: 2–3 sentences on what the study demonstrated and how it tested the AI-assisted massing against the surrounding urban fabric.]</p>
+      <p class="field-row__content">The first critique asked the only question that matters here — do these images contain context? They did not, at first: the initial LoRA was over-weighted and had to be recalibrated before its output read as Daegu rather than as the base model&rsquo;s prior. The MATLAB network trained to R = 0.93 across all sets, and the selected forms were carried into a parametric model. Context arrived as a statistical artifact of the training set rather than as a reading of the site, which is the argument the project is making.</p>
     </div>
 
     <figure class="figure">
