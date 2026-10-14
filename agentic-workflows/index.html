@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI &amp; Agentic Workflows — Brad Machado</title>
+<meta name="description" content="Human-centric design, agent-scale execution. How Brad Machado directs AI agents to build apps, computational tools, data pipelines, and architectural workflows — with the plan, the checkpoints, and the verification held by a person.">
+<link rel="canonical" href="https://bradmachado.com/agentic-workflows/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container site-header__bar">
+    <a href="/" class="logo">Brad Machado</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/#work">Work</a>
+      <a href="/#research">Research</a>
+      <a href="/agentic-workflows/" aria-current="page">AI Workflows</a>
+      <a href="/about/">About</a>
+      <a href="/resume/">Resume</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <header class="page-header">
+      <span class="eyebrow">Method / AI &amp; Agentic Workflows</span>
+      <div class="page-header__top">
+        <h1 class="page-header__title">Human-centric design.<br>Agent-scale execution.</h1>
+        <span class="page-header__date">2025–27</span>
+      </div>
+      <p class="page-header__thesis">The design decisions stay with a person: who the building is for, who operates it, what it costs them. The execution — code, pipelines, computational tools — runs through AI agents working a plan I write, gate, and verify.</p>
+    </header>
+
+    <dl class="spec-block">
+      <div><dt>Role</dt><dd>Designer · Orchestrator · Verifier</dd></div>
+      <div><dt>Agents</dt><dd>Claude Code · Parallel subagents</dd></div>
+      <div><dt>Stack</dt><dd>Python · SQL · Grasshopper · HTML/CSS</dd></div>
+      <div><dt>Outputs</dt><dd>Apps · Tools · Pipelines · Design workflows</dd></div>
+    </dl>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 970 270" role="img" aria-labelledby="aw-diagram-title aw-diagram-desc" xmlns="http://www.w3.org/2000/svg">
+        <title id="aw-diagram-title">Human-gated agentic workflow</title>
+        <desc id="aw-diagram-desc">A human brief feeds a strategy plan, which splits into three parallel agent subtasks. Each agent returns a report to a human verification gate. Verified work ships as an app, tool, or design output; rejected work returns to the plan for revision. The human holds both ends of the loop.</desc>
+        <defs>
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#B0431F" />
+          </marker>
+        </defs>
+
+        <!-- connectors -->
+        <line x1="160" y1="125" x2="198" y2="125" class="diagram-arrow" marker-end="url(#arrowhead)" />
+        <line x1="350" y1="110" x2="388" y2="60"  class="diagram-arrow" marker-end="url(#arrowhead)" />
+        <line x1="350" y1="125" x2="388" y2="125" class="diagram-arrow" marker-end="url(#arrowhead)" />
+        <line x1="350" y1="140" x2="388" y2="190" class="diagram-arrow" marker-end="url(#arrowhead)" />
+        <line x1="560" y1="60"  x2="598" y2="108" class="diagram-arrow" marker-end="url(#arrowhead)" />
+        <line x1="560" y1="125" x2="598" y2="125" class="diagram-arrow" marker-end="url(#arrowhead)" />
+        <line x1="560" y1="190" x2="598" y2="142" class="diagram-arrow" marker-end="url(#arrowhead)" />
+        <line x1="750" y1="125" x2="788" y2="125" class="diagram-arrow" marker-end="url(#arrowhead)" />
+        <path d="M675,155 L675,245 L275,245 L275,157" class="diagram-arrow diagram-arrow--dashed" marker-end="url(#arrowhead)" />
+        <text x="475" y="239" text-anchor="middle" class="diagram-sublabel">REVISE — FAILED CHECK</text>
+
+        <!-- Human: brief -->
+        <rect x="10" y="95" width="150" height="60" class="diagram-box diagram-box--human" />
+        <text x="85" y="119" text-anchor="middle" class="diagram-label">HUMAN — BRIEF</text>
+        <text x="85" y="137" text-anchor="middle" class="diagram-sublabel">USER · INTENT · LIMITS</text>
+
+        <!-- Plan -->
+        <rect x="200" y="95" width="150" height="60" class="diagram-box" />
+        <text x="275" y="119" text-anchor="middle" class="diagram-label">STRATEGY PLAN</text>
+        <text x="275" y="137" text-anchor="middle" class="diagram-sublabel">SUBTASKS · GATES</text>
+
+        <!-- Agents -->
+        <rect x="390" y="40" width="170" height="40" class="diagram-box diagram-box--dashed" />
+        <text x="475" y="64" text-anchor="middle" class="diagram-label">AGENT — SUBTASK A</text>
+        <rect x="390" y="105" width="170" height="40" class="diagram-box diagram-box--dashed" />
+        <text x="475" y="129" text-anchor="middle" class="diagram-label">AGENT — SUBTASK B</text>
+        <rect x="390" y="170" width="170" height="40" class="diagram-box diagram-box--dashed" />
+        <text x="475" y="194" text-anchor="middle" class="diagram-label">AGENT — SUBTASK C</text>
+
+        <!-- Human: verify -->
+        <rect x="600" y="95" width="150" height="60" class="diagram-box diagram-box--human" />
+        <text x="675" y="119" text-anchor="middle" class="diagram-label">HUMAN — VERIFY</text>
+        <text x="675" y="137" text-anchor="middle" class="diagram-sublabel">REPORT VS. SOURCE</text>
+
+        <!-- Output -->
+        <rect x="790" y="95" width="170" height="60" class="diagram-box" />
+        <text x="875" y="119" text-anchor="middle" class="diagram-label">SHIP</text>
+        <text x="875" y="137" text-anchor="middle" class="diagram-sublabel">APP · TOOL · DESIGN</text>
+      </svg>
+      <figcaption>Fig. 01 — Human-gated agent loop. Heavy rule: human decision. Dashed: agent execution.</figcaption>
+    </figure>
+
+    <div class="section-head">
+      <span class="section-head__title">01 / Two Commitments</span>
+    </div>
+
+    <div class="principles">
+      <div class="principle">
+        <span class="list-row__index">01</span>
+        <h2 class="principle__title">Design for the person who inherits it.</h2>
+        <p>I came to architecture from operations. I held the utility bill for a Silver-certified building constructed ninety degrees off its intended orientation, glass atrium facing full sun. Nobody who made that decision lived with it. The people who occupy, maintain, and pay for a building are the brief.</p>
+      </div>
+      <div class="principle">
+        <span class="list-row__index">02</span>
+        <h2 class="principle__title">Run execution at agent scale.</h2>
+        <p>I direct AI agents the way I ran construction: a written scope, bounded tasks, a report at each milestone, and an inspection before anything moves forward. It lets one designer carry software and data work alongside the design itself. Accountability does not transfer to the agent.</p>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <span class="section-head__title">02 / Method</span>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Brief</span>
+      <p class="field-row__content">Define the user, the objective, and the constraints before any agent runs. An undefined objective is the most expensive failure mode in agentic work. Agents execute it quickly and confidently.</p>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Decompose</span>
+      <p class="field-row__content">Break the work into subtasks small enough to verify. Each gets its own instructions, inputs, and acceptance check. Independent subtasks run in parallel.</p>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Gate</span>
+      <p class="field-row__content">Every step that can change the next one ends in a report and a stop. Destructive or irreversible steps wait for a person. Nothing goes live on an agent's word alone.</p>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Verify</span>
+      <p class="field-row__content">Check output against the source, not against the agent's summary of it. On this site, drafted copy that claimed Revit on SketchUp projects was caught and pulled for exactly that reason.</p>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Persist</span>
+      <p class="field-row__content">Agents start each session cold. Decisions, conventions, and open items live in versioned build notes and plans, so the next session resumes from the record instead of from memory.</p>
+    </div>
+
+    <div class="section-head">
+      <span class="section-head__title">03 / Applied</span>
+      <span class="section-head__meta">Apps · Tools · Pipelines · Design</span>
+    </div>
+
+    <div>
+      <div class="list-row">
+        <span class="list-row__index">A.01</span>
+        <div>
+          <h3 class="list-row__title">bradmachado.com</h3>
+          <p class="list-row__desc">This site. Rebuilt from a hosted template into hand-written static HTML and one stylesheet, delivered by Claude Code against a phased build plan with a checkpoint at the end of every phase.</p>
+        </div>
+        <span class="list-row__meta">Claude Code · HTML/CSS · GitHub Pages</span>
+      </div>
+
+      <div class="list-row">
+        <span class="list-row__index">A.02</span>
+        <div>
+          <h3 class="list-row__title">Portfolio Generator</h3>
+          <p class="list-row__desc">A Python pipeline that assembles the print portfolio from the live site: generator to self-contained HTML to headless Chromium PDF. 25 pages, 41 images, each used once, no text invented.</p>
+        </div>
+        <span class="list-row__meta">Python · Chromium</span>
+      </div>
+
+      <div class="list-row">
+        <span class="list-row__index">A.03</span>
+        <div>
+          <a href="/hvac-rightsizing/"><h3 class="list-row__title">HVAC Rightsizing</h3></a>
+          <p class="list-row__desc">Peak heating and cooling loads transferred from ResStock onto national-scale U.S. property records. Harmonization and stratification scripted in SQL and Python on Databricks with AI-assisted development.</p>
+        </div>
+        <span class="list-row__meta">Databricks · SQL · Python</span>
+      </div>
+
+      <div class="list-row">
+        <span class="list-row__index">A.04</span>
+        <div>
+          <a href="/less-siteless/"><h3 class="list-row__title">Less Siteless</h3></a>
+          <p class="list-row__desc">Models in the design loop: a Flux LoRA trained on site imagery, YOLO v.7 traffic analysis from CCTV recordings, Ladybug solar exposure, and Wallacei X optimization driving the form.</p>
+        </div>
+        <span class="list-row__meta">ComfyUI · YOLO v.7 · Wallacei X</span>
+      </div>
+
+      <div class="list-row">
+        <span class="list-row__index">A.05</span>
+        <div>
+          <a href="/artificial-context/"><h3 class="list-row__title">Artificial Context</h3></a>
+          <p class="list-row__desc">Context generated from a fine-tuned image model, screened structurally in Karamba3D, evolved in Wallacei X, and fed to a MATLAB neural network (R = 0.93).</p>
+        </div>
+        <span class="list-row__meta">Flux LoRA · Karamba3D · MATLAB</span>
+      </div>
+    </div>
+
+    <div class="field-row" style="margin-top:64px; border-top:var(--rule-thick) solid var(--color-ink);">
+      <span class="field-label">Position</span>
+      <p class="field-row__content">Agents make execution cheap. They do not make judgment cheap. The scarce skill is knowing what to build, for whom, and whether the output is true — and keeping a person accountable for all three.</p>
+    </div>
+
+    <div class="next-link">
+      <span class="field-label">Selected Work</span>
+      <a href="/#work"><span class="next-link__title">Return to Work →</span></a>
+    </div>
+
+  </div>
+</main>
+
+</body>
+</html>

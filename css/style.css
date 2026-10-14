@@ -705,3 +705,42 @@ figcaption,
   justify-content: center;
   padding-block: 64px;
 }
+
+/* ==========================================================================
+   AI workflows page — two-commitment grid, human-gate diagram stroke
+   ========================================================================== */
+
+.principles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 64px;
+  padding-block: 40px 16px;
+}
+
+.principle {
+  border-top: var(--rule-thin) solid var(--color-hairline);
+  padding-top: 20px;
+}
+
+.principle__title {
+  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-top: 16px;
+}
+
+.principle p {
+  color: var(--color-body);
+  font-size: 16px;
+  line-height: 1.65;
+  margin-top: 20px;
+  max-width: 54ch;
+}
+
+.diagram-box--human { stroke-width: 2.5; }
+
+.diagram-arrow--dashed { stroke-dasharray: 5 4; }
+
+@media (max-width: 900px) {
+  .principles { grid-template-columns: 1fr; gap: 48px; }
+}
