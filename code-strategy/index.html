@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code Strategy — Brad Machado</title>
+<meta name="description" content="Code Strategy: a Claude Code skill that plans a project, scopes context per agent, reviews each return one tier up and keeps an auditable ledger.">
+<link rel="canonical" href="https://bradmachado.com/code-strategy/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container site-header__bar">
+    <a href="/" class="logo">Brad Machado</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/#work">Work</a>
+      <a href="/#research">Research</a>
+      <a href="/agentic-workflows/" aria-current="page">AI Workflows</a>
+      <a href="/about/">About</a>
+      <a href="/resume/">Resume</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <header class="page-header">
+      <span class="eyebrow">Method / Code Strategy</span>
+      <div class="page-header__top">
+        <h1 class="page-header__title">Code Strategy</h1>
+        <span class="page-header__date">2026</span>
+      </div>
+      <p class="page-header__thesis">Most agent failures are context failures. The skill treats what each agent is allowed to read as a design decision, and puts a reviewer between every return and the work that depends on it.</p>
+    </header>
+
+    <dl class="spec-block">
+      <div><dt>Type</dt><dd>Claude Code skill and agent bundle: SKILL.md, nine subagent definitions (four executors, intake, review, three review gates), templates, a state file, a Stop hook</dd></div>
+      <div><dt>Role</dt><dd>Author. Designed and written for my own studio work; run on it since September 2026</dd></div>
+      <div><dt>Tools</dt><dd>Claude Code · Claude Fable, Opus, Sonnet · Markdown ledger · Python · MCP into Rhino, Grasshopper, Blender, MATLAB</dd></div>
+      <div><dt>Scope</dt><dd>Source intake, strategy plan, roster chart, tiered execution, review gates, progress log, closeout</dd></div>
+      <div><dt>Status</dt><dd>v1 in use on ARCH 575. v2.0 (context packets, review gates, roster chart) released 15 October 2026; download below</dd></div>
+    </dl>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 1200 620" role="img" aria-labelledby="cs-fig1-title cs-fig1-desc" xmlns="http://www.w3.org/2000/svg">
+        <title id="cs-fig1-title">Code Strategy levels and ledger</title>
+        <desc id="cs-fig1-desc">Four swimlanes: program, master task, task, subtask. Each level spawns the next with a scoped packet; each return passes a review gate one tier above before merging up; all levels read from and write to one context ledger.</desc>
+        <defs>
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#B0431F" />
+          </marker>
+        </defs>
+        <text x="10" y="54" class="diagram-label">L0 · PROGRAM</text>
+        <text x="10" y="72" class="diagram-sublabel">Brad + orchestrator</text>
+        <text x="10" y="224" class="diagram-label">L1 · MASTER TASK</text>
+        <text x="10" y="242" class="diagram-sublabel">strategy conversation</text>
+        <text x="10" y="394" class="diagram-label">L2 · TASK</text>
+        <text x="10" y="412" class="diagram-sublabel">coordinator agent</text>
+        <text x="10" y="564" class="diagram-label">L3 · SUBTASK</text>
+        <text x="10" y="582" class="diagram-sublabel">executor agents</text>
+        <rect x="150" y="30" width="200" height="60" class="diagram-box diagram-box--human" />
+        <text x="250" y="54" text-anchor="middle" class="diagram-label">BRAD</text>
+        <text x="250" y="72" text-anchor="middle" class="diagram-sublabel">brief · answers every question</text>
+        <path d="M350,60 L398,60" class="diagram-arrow" />
+        <text x="374" y="52" text-anchor="middle" class="diagram-sublabel">brief</text>
+        <rect x="400" y="30" width="200" height="60" class="diagram-box" />
+        <text x="500" y="54" text-anchor="middle" class="diagram-label">PROGRAM STRATEGY</text>
+        <text x="500" y="72" text-anchor="middle" class="diagram-sublabel">orchestrator · Fable, high</text>
+        <rect x="650" y="30" width="200" height="60" class="diagram-box diagram-box--human" />
+        <text x="750" y="54" text-anchor="middle" class="diagram-label">BRAD · CLOSEOUT REVIEW</text>
+        <text x="750" y="72" text-anchor="middle" class="diagram-sublabel">the one planned stop</text>
+        <path d="M500,90 L500,130 L170,130 L170,198" class="diagram-arrow" />
+        <text x="178" y="160" class="diagram-sublabel">spawns M1 · master packet</text>
+        <text x="400" y="150" class="diagram-sublabel">M1 shown · M2, M3 … repeat this lane</text>
+        <rect x="150" y="210" width="200" height="60" class="diagram-box diagram-box--dashed" />
+        <rect x="150" y="205" width="200" height="60" class="diagram-box diagram-box--dashed" />
+        <rect x="150" y="200" width="200" height="60" class="diagram-box" />
+        <text x="250" y="224" text-anchor="middle" class="diagram-label">M1 MASTER STRATEGY</text>
+        <text x="250" y="242" text-anchor="middle" class="diagram-sublabel">own conversation · Fable/Opus</text>
+        <path d="M350,230 L398,230" class="diagram-arrow" />
+        <text x="374" y="222" text-anchor="middle" class="diagram-sublabel">writes</text>
+        <rect x="400" y="200" width="200" height="60" class="diagram-box" />
+        <text x="500" y="224" text-anchor="middle" class="diagram-label">M1 PLAN + LOG</text>
+        <text x="500" y="242" text-anchor="middle" class="diagram-sublabel">tasks T1 … Tn · check values</text>
+        <path d="M600,230 L648,230" class="diagram-arrow" />
+        <text x="624" y="222" text-anchor="middle" class="diagram-sublabel">submits</text>
+        <polygon points="650,230 680,185 820,185 850,230 820,275 680,275" class="diagram-box" />
+        <text x="750" y="226" text-anchor="middle" class="diagram-label">G1 REVIEW</text>
+        <text x="750" y="244" text-anchor="middle" class="diagram-sublabel">program tier · fits program</text>
+        <path d="M790,185 L790,92" class="diagram-arrow" />
+        <text x="798" y="140" class="diagram-sublabel">ACCEPT → closeout</text>
+        <path d="M710,185 L710,176 L310,176 L310,198" class="diagram-arrow diagram-arrow--dashed" />
+        <text x="400" y="170" class="diagram-sublabel">REJECT · correction or plan revision</text>
+        <path d="M850,230 L898,230" class="diagram-arrow diagram-arrow--dashed" />
+        <text x="874" y="222" text-anchor="middle" class="diagram-sublabel">log</text>
+        <path d="M170,260 L170,368" class="diagram-arrow" />
+        <text x="178" y="315" class="diagram-sublabel">spawns T1 · task packet</text>
+        <text x="400" y="324" class="diagram-sublabel">T1 shown · T2 … Tn, up to 3 in parallel</text>
+        <rect x="150" y="380" width="200" height="60" class="diagram-box diagram-box--dashed" />
+        <rect x="150" y="375" width="200" height="60" class="diagram-box diagram-box--dashed" />
+        <rect x="150" y="370" width="200" height="60" class="diagram-box" />
+        <text x="250" y="394" text-anchor="middle" class="diagram-label">T1 TASK AGENT</text>
+        <text x="250" y="412" text-anchor="middle" class="diagram-sublabel">coordinator · Opus, high</text>
+        <path d="M350,400 L398,400" class="diagram-arrow" />
+        <text x="374" y="392" text-anchor="middle" class="diagram-sublabel">writes</text>
+        <rect x="400" y="370" width="200" height="60" class="diagram-box" />
+        <text x="500" y="394" text-anchor="middle" class="diagram-label">T1 RESULT</text>
+        <text x="500" y="412" text-anchor="middle" class="diagram-sublabel">merged S outputs · REPORT T1</text>
+        <path d="M600,400 L648,400" class="diagram-arrow" />
+        <text x="624" y="392" text-anchor="middle" class="diagram-sublabel">submits</text>
+        <polygon points="650,400 680,355 820,355 850,400 820,445 680,445" class="diagram-box" />
+        <text x="750" y="396" text-anchor="middle" class="diagram-label">G2 REVIEW</text>
+        <text x="750" y="414" text-anchor="middle" class="diagram-sublabel">master tier · fits M1 plan</text>
+        <path d="M790,355 L790,305 L500,305 L500,262" class="diagram-arrow" />
+        <text x="560" y="298" class="diagram-sublabel">ACCEPT · merge into M1</text>
+        <path d="M710,355 L710,346 L310,346 L310,368" class="diagram-arrow diagram-arrow--dashed" />
+        <text x="400" y="340" class="diagram-sublabel">REJECT · next tier or revise plan</text>
+        <path d="M850,400 L898,400" class="diagram-arrow diagram-arrow--dashed" />
+        <text x="874" y="392" text-anchor="middle" class="diagram-sublabel">log</text>
+        <path d="M170,430 L170,538" class="diagram-arrow" />
+        <text x="178" y="485" class="diagram-sublabel">spawns S1 · subtask packet</text>
+        <text x="400" y="494" class="diagram-sublabel">S1 shown · S2 … Sm, up to 3 in parallel</text>
+        <rect x="150" y="550" width="200" height="60" class="diagram-box diagram-box--dashed" />
+        <rect x="150" y="545" width="200" height="60" class="diagram-box diagram-box--dashed" />
+        <rect x="150" y="540" width="200" height="60" class="diagram-box" />
+        <text x="250" y="564" text-anchor="middle" class="diagram-label">S1 EXECUTOR</text>
+        <text x="250" y="582" text-anchor="middle" class="diagram-sublabel">tier per plan: Sonnet → Fable</text>
+        <path d="M350,570 L398,570" class="diagram-arrow" />
+        <text x="374" y="562" text-anchor="middle" class="diagram-sublabel">writes</text>
+        <rect x="400" y="540" width="200" height="60" class="diagram-box" />
+        <text x="500" y="564" text-anchor="middle" class="diagram-label">REPORT S1</text>
+        <text x="500" y="582" text-anchor="middle" class="diagram-sublabel">PASS / FAIL per check · values</text>
+        <path d="M600,570 L648,570" class="diagram-arrow" />
+        <text x="624" y="562" text-anchor="middle" class="diagram-sublabel">submits</text>
+        <polygon points="650,570 680,525 820,525 850,570 820,615 680,615" class="diagram-box" />
+        <text x="750" y="566" text-anchor="middle" class="diagram-label">G3 REVIEW</text>
+        <text x="750" y="584" text-anchor="middle" class="diagram-sublabel">task tier · fits T1</text>
+        <path d="M790,525 L790,475 L500,475 L500,432" class="diagram-arrow" />
+        <text x="560" y="468" class="diagram-sublabel">ACCEPT · merge into T1</text>
+        <path d="M710,525 L710,516 L310,516 L310,538" class="diagram-arrow diagram-arrow--dashed" />
+        <text x="400" y="510" class="diagram-sublabel">REJECT · S1b next tier → S1c plan fix → stop</text>
+        <path d="M850,570 L898,570" class="diagram-arrow diagram-arrow--dashed" />
+        <text x="874" y="562" text-anchor="middle" class="diagram-sublabel">log</text>
+        <rect x="900" y="190" width="280" height="410" class="diagram-box diagram-box--dashed" />
+        <text x="915" y="214" class="diagram-label">CONTEXT LEDGER</text>
+        <text x="915" y="230" class="diagram-sublabel">project folder · one source of truth</text>
+        <text x="915" y="262" class="diagram-label">Task 0 intake</text>
+        <text x="915" y="278" class="diagram-sublabel">file index · Markdown twin per source</text>
+        <text x="915" y="308" class="diagram-label">Plans + roster</text>
+        <text x="915" y="324" class="diagram-sublabel">program plan · M-plans · roster · status</text>
+        <text x="915" y="354" class="diagram-label">Logs</text>
+        <text x="915" y="370" class="diagram-sublabel">progress log per master task · REPORTs</text>
+        <text x="915" y="400" class="diagram-label">Decisions</text>
+        <text x="915" y="416" class="diagram-sublabel">decisions without input · revert costs</text>
+        <text x="915" y="446" class="diagram-label">State</text>
+        <text x="915" y="462" class="diagram-sublabel">state.json · phase · position</text>
+        <text x="915" y="492" class="diagram-label">Images</text>
+        <text x="915" y="508" class="diagram-sublabel">process images per subtask</text>
+        <text x="915" y="548" class="diagram-sublabel">Packets are cut from here.</text>
+        <text x="915" y="564" class="diagram-sublabel">Returns are appended here.</text>
+        <text x="915" y="580" class="diagram-sublabel">No level reads the whole ledger.</text>
+      </svg>
+      <figcaption>Fig. 01 — Four levels, one ledger: each level spawns the next with a scoped packet and merges returns up through a review gate.</figcaption>
+    </figure>
+
+    <div class="section-head">
+      <span class="section-head__title">01 / Problem</span>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Why</span>
+      <p class="field-row__content">A studio project is a few hundred decisions over four months, made in tools that do not talk to each other: Rhino, Grasshopper, Ladybug, MATLAB, Revit, a slide deck. Running that through one long chat fails in a predictable way. The session fills with everything it has read, the plan drifts, and the model starts acting on the wrong half of its context. The only reviewer is me, at the end, after the error is already built into three downstream files. Code Strategy is the fix I built for that, and it runs the work I do every week.</p>
+    </div>
+
+    <div class="section-head">
+      <span class="section-head__title">02 / Context engineering</span>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Packets and the ledger</span>
+      <p class="field-row__content">Context is a budget. The default spends it on everything in the folder; the skill does the opposite. The orchestrator holds the plan and the tail of the log. Each subtask agent receives a packet cut from one shared ledger: its own section of the plan, the fixed-inputs table, the tooling rules, the measured values from the subtasks it depends on, and the acceptance checks it will be scored against. It does not receive the other sections, the other tasks&#x27; logs, or the source PDFs. Those were converted to Markdown twins at intake, and only the twin is read. What the packet leaves out, the agent cannot act on.</p>
+    </div>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 1100 500" role="img" aria-labelledby="cs-fig2-title cs-fig2-desc" xmlns="http://www.w3.org/2000/svg">
+        <title id="cs-fig2-title">Packet, return and review</title>
+        <desc id="cs-fig2-desc">A packet handed down to a producer, the return handed up, and a reviewer that receives the packet, the return, and the parent&#x27;s need before issuing a verdict.</desc>
+        <rect x="40" y="40" width="320" height="230" class="diagram-box" />
+        <text x="56" y="64" class="diagram-label">PACKET — HANDED DOWN</text>
+        <text x="56" y="80" class="diagram-sublabel">cut from the ledger; nothing more</text>
+        <text x="56" y="106" class="diagram-label">1 Identity: title · budget · tier</text>
+        <text x="56" y="125" class="diagram-label">2 Fixed inputs · tooling · folders</text>
+        <text x="56" y="144" class="diagram-label">3 Plan section §S1 only</text>
+        <text x="56" y="163" class="diagram-label">4 Upstream values, with units</text>
+        <text x="56" y="182" class="diagram-label">5 Acceptance checks + check values</text>
+        <text x="56" y="201" class="diagram-label">6 Return contract: REPORT block</text>
+        <text x="56" y="236" class="diagram-sublabel">Excluded: other sections, other logs,</text>
+        <text x="56" y="252" class="diagram-sublabel">source PDFs, the parent&#x27;s reasoning</text>
+        <path d="M360,160 L418,160" class="diagram-arrow" />
+        <text x="389" y="152" text-anchor="middle" class="diagram-sublabel">reads</text>
+        <rect x="420" y="120" width="220" height="80" class="diagram-box" />
+        <text x="530" y="148" text-anchor="middle" class="diagram-label">PRODUCER</text>
+        <text x="530" y="166" text-anchor="middle" class="diagram-sublabel">S1 executor · T1 agent · M1</text>
+        <text x="530" y="182" text-anchor="middle" class="diagram-sublabel">sees only the packet</text>
+        <path d="M640,160 L718,160" class="diagram-arrow" />
+        <text x="679" y="152" text-anchor="middle" class="diagram-sublabel">writes</text>
+        <rect x="720" y="40" width="340" height="230" class="diagram-box" />
+        <text x="736" y="64" class="diagram-label">RETURN — HANDED UP</text>
+        <text x="736" y="80" class="diagram-sublabel">the REPORT block · files verified</text>
+        <text x="736" y="106" class="diagram-label">PASS / FAIL per check, with the value</text>
+        <text x="736" y="125" class="diagram-label">Files at the logged paths</text>
+        <text x="736" y="144" class="diagram-label">Measured values for the next level</text>
+        <text x="736" y="163" class="diagram-label">Decisions without input + revert cost</text>
+        <text x="736" y="182" class="diagram-label">Deviations · images · BLOCKED code</text>
+        <text x="736" y="201" class="diagram-label">LOG: appended</text>
+        <rect x="410" y="240" width="240" height="60" class="diagram-box" />
+        <text x="530" y="264" text-anchor="middle" class="diagram-label">PARENT NEED</text>
+        <text x="530" y="282" text-anchor="middle" class="diagram-sublabel">§T1 inputs: names · units · format</text>
+        <path d="M200,270 L200,385 L388,385" class="diagram-arrow" />
+        <text x="294" y="377" text-anchor="middle" class="diagram-sublabel">the ask</text>
+        <path d="M890,270 L890,385 L692,385" class="diagram-arrow" />
+        <text x="791" y="377" text-anchor="middle" class="diagram-sublabel">the answer</text>
+        <path d="M530,300 L530,348" class="diagram-arrow" />
+        <text x="538" y="328" class="diagram-sublabel">the fit</text>
+        <rect x="390" y="350" width="300" height="70" class="diagram-box" />
+        <text x="540" y="378" text-anchor="middle" class="diagram-label">REVIEWER — ONE TIER ABOVE</text>
+        <text x="540" y="398" text-anchor="middle" class="diagram-sublabel">ask + answer + fit · never the producer</text>
+        <path d="M540,420 L540,446" class="diagram-arrow" />
+        <rect x="360" y="448" width="360" height="34" class="diagram-box" />
+        <text x="540" y="470" text-anchor="middle" class="diagram-label">VERDICT · ACCEPT → merge · REJECT → ladder</text>
+      </svg>
+      <figcaption>Fig. 02 — One packet, one return, one review: the reviewer sees the ask, the answer and the parent&#x27;s need.</figcaption>
+    </figure>
+
+    <div class="section-head">
+      <span class="section-head__title">03 / Prompt engineering</span>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">One template, filled by the orchestrator</span>
+      <p class="field-row__content">Every executor prompt is one template with the blanks filled in. It names one subtask, states the time budget, lists the output files with folder paths, and gives each acceptance check a numeric value computed at planning time, before any agent has a reason to want a particular answer. Two lines do most of the work. &quot;Take the conservative default for anything the plan leaves open, record it with its revert cost, never ask a question&quot; keeps the run moving. &quot;Return exactly the REPORT block; nothing may follow&quot; makes every return machine-checkable: PASS or FAIL per check, values with units, files, decisions. Any other shape is a FAIL.</p>
+    </div>
+
+    <div class="section-head">
+      <span class="section-head__title">04 / Agentic workflow</span>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Orchestrator, tiers, ladder</span>
+      <p class="field-row__content">One Claude Code session in the project folder is the orchestrator. It does none of the work: it spawns a fresh agent per subtask and verifies what comes back. Agents are tiered by model and effort. Opus at medium effort builds from a spec. Opus at high effort handles design moves and anything driving Rhino or Grasshopper over MCP. Fable handles optimization and corrections of Opus failures. Sonnet needs a justification in the plan. Three subtasks run in parallel once their dependencies pass. A failure retries one tier up; a second is a plan fault and the plan is revised; a third stops the run and asks me one question.</p>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Hard stops</span>
+      <p class="field-row__content">The run ends early for four reasons only: an action only I can take, such as opening an application or supplying a file; a brief with two readings that produce different deliverables and no conservative reading that satisfies both; a destructive step, anything that overwrites a file the run did not create or sends anything outside the project folder; a missing tool after one remediation attempt. Everything else is a logged default with a stated revert cost.</p>
+    </div>
+
+    <div class="section-head">
+      <span class="section-head__title">05 / Review gates</span>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">The third question</span>
+      <p class="field-row__content">v1 verified two things after every subtask: the logged files exist, and every check is stated PASS or FAIL with a value. That catches a missing deliverable. It does not catch a correct deliverable the next task cannot use. v2 adds a reviewer one tier above the producer: a separate agent that receives the packet, the return, and the parent&#x27;s section of the plan, and answers a third question. Does this result fit what the level above needs, in the names, units and format it expects. A return that fails the fit question goes back to the producer. It does not pass upward to break something later.</p>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Why it matters, from the log</span>
+      <p class="field-row__content">The case that forced this was a surrogate model. The subtask that trained neural networks on a 2,000-run facade sample passed its own checks: test R² above 0.99 on photovoltaic yield, solar gain on glass and the shade plate. The view objective it carried upward was 12 points high on average, 18 at worst. The error surfaced only because the next subtask re-simulated all 136 Pareto designs in Ladybug and the optimum was re-picked on simulated values. Under v1 that catch depended on the plan happening to include a re-simulation step. Under v2 the gate asks the fit question before the number moves.</p>
+    </div>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 1200 290" role="img" aria-labelledby="cs-fig3-title cs-fig3-desc" xmlns="http://www.w3.org/2000/svg">
+        <title id="cs-fig3-title">Review gate and retry ladder</title>
+        <desc id="cs-fig3-desc">A return passes three checks in sequence: files exist, every check passes with its value, output fits the parent. Any no enters a ladder: first fail retries on the next tier, second fail revises the plan, third fail is a hard stop.</desc>
+        <rect x="20" y="40" width="160" height="60" class="diagram-box" />
+        <text x="100" y="64" text-anchor="middle" class="diagram-label">RETURN ARRIVES</text>
+        <text x="100" y="82" text-anchor="middle" class="diagram-sublabel">REPORT S1 + files</text>
+        <path d="M180,70 L223,70" class="diagram-arrow" />
+        <polygon points="225,70 253,32 387,32 415,70 387,108 253,108" class="diagram-box" />
+        <text x="320" y="66" text-anchor="middle" class="diagram-label">Files exist at</text>
+        <text x="320" y="81" text-anchor="middle" class="diagram-label">logged paths?</text>
+        <path d="M415,70 L453,70" class="diagram-arrow" />
+        <text x="434" y="62" text-anchor="middle" class="diagram-sublabel">yes</text>
+        <polygon points="455,70 483,32 617,32 645,70 617,108 483,108" class="diagram-box" />
+        <text x="550" y="66" text-anchor="middle" class="diagram-label">Every check PASS,</text>
+        <text x="550" y="81" text-anchor="middle" class="diagram-label">with its value?</text>
+        <path d="M645,70 L683,70" class="diagram-arrow" />
+        <text x="664" y="62" text-anchor="middle" class="diagram-sublabel">yes</text>
+        <polygon points="685,70 713,32 847,32 875,70 847,108 713,108" class="diagram-box" />
+        <text x="780" y="66" text-anchor="middle" class="diagram-label">Fits the parent?</text>
+        <text x="780" y="83" text-anchor="middle" class="diagram-sublabel">names · units · format</text>
+        <path d="M875,70 L928,70" class="diagram-arrow" />
+        <text x="901" y="62" text-anchor="middle" class="diagram-sublabel">yes</text>
+        <rect x="930" y="40" width="220" height="60" class="diagram-box" />
+        <text x="1040" y="64" text-anchor="middle" class="diagram-label">ACCEPT</text>
+        <text x="1040" y="82" text-anchor="middle" class="diagram-sublabel">merge · status PASS · log</text>
+        <line x1="320" y1="108" x2="320" y2="140" class="diagram-box" />
+        <line x1="550" y1="108" x2="550" y2="140" class="diagram-box" />
+        <line x1="780" y1="108" x2="780" y2="140" class="diagram-box" />
+        <line x1="320" y1="140" x2="780" y2="140" class="diagram-box" />
+        <text x="792" y="144" class="diagram-sublabel">any no</text>
+        <path d="M330,140 L330,168" class="diagram-arrow" />
+        <rect x="230" y="170" width="200" height="70" class="diagram-box" />
+        <text x="330" y="194" text-anchor="middle" class="diagram-label">1ST FAIL</text>
+        <text x="330" y="212" text-anchor="middle" class="diagram-sublabel">retry S1b on the next tier</text>
+        <text x="330" y="228" text-anchor="middle" class="diagram-sublabel">reuse PASS outputs</text>
+        <rect x="490" y="170" width="200" height="70" class="diagram-box" />
+        <text x="590" y="194" text-anchor="middle" class="diagram-label">2ND FAIL = PLAN FAULT</text>
+        <text x="590" y="212" text-anchor="middle" class="diagram-sublabel">revise steps or check values</text>
+        <text x="590" y="228" text-anchor="middle" class="diagram-sublabel">minor plan bump · run S1c</text>
+        <rect x="750" y="170" width="200" height="70" class="diagram-box" />
+        <text x="850" y="194" text-anchor="middle" class="diagram-label">3RD FAIL = HARD STOP</text>
+        <text x="850" y="212" text-anchor="middle" class="diagram-sublabel">H2 or H4 · position line</text>
+        <text x="850" y="228" text-anchor="middle" class="diagram-sublabel">STOP — report before I continue</text>
+        <path d="M430,205 L488,205" class="diagram-arrow" />
+        <text x="459" y="197" text-anchor="middle" class="diagram-sublabel">again</text>
+        <path d="M690,205 L748,205" class="diagram-arrow" />
+        <text x="719" y="197" text-anchor="middle" class="diagram-sublabel">again</text>
+        <path d="M230,205 L100,205 L100,102" class="diagram-arrow diagram-arrow--dashed" />
+        <path d="M590,240 L590,262 L100,262 L100,207" class="diagram-arrow diagram-arrow--dashed" />
+        <text x="108" y="160" class="diagram-sublabel">re-run</text>
+      </svg>
+      <figcaption>Fig. 03 — Inside a gate: files exist, every check passes with a value, the result fits the parent; any no enters the retry ladder.</figcaption>
+    </figure>
+
+    <div class="section-head">
+      <span class="section-head__title">06 / The roster chart</span>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">First product</span>
+      <p class="field-row__content">Before anything runs, the skill now delivers two things together: the plan and a roster chart. Every master task, task and subtask is a card: what it does, which agent and tier runs it, which reviewer gates it, who it reports to, its status. Failed first runs stay on the chart beside their retry. When a subtask and its reviewer both miss the same thing, the chart points at one packet and one reviewer brief, and the question becomes concrete: more context, better prompting, or a higher tier.</p>
+    </div>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 1200 570" role="img" aria-labelledby="cs-fig4-title cs-fig4-desc" xmlns="http://www.w3.org/2000/svg">
+        <title id="cs-fig4-title">Roster chart</title>
+        <desc id="cs-fig4-desc">An org-chart style roster: program at top, master tasks below, tasks under the master task, subtasks under one task. Each card names the unit, what it does, its agent and tier, its reviewer and tier, who it reports to and its status. A retried subtask S2.2b is highlighted with a note on the failed first run.</desc>
+        <rect x="510" y="20" width="230" height="84" class="diagram-box" />
+        <text x="520" y="38" class="diagram-label">P · ARCH 575 FACADE PANEL</text>
+        <text x="520" y="54" class="diagram-sublabel">does: fixed inputs, hand-offs M1→M2</text>
+        <text x="520" y="67" class="diagram-sublabel">agent: orchestrator · Fable high</text>
+        <text x="520" y="80" class="diagram-sublabel">reviewer: Brad at closeout</text>
+        <text x="520" y="93" class="diagram-sublabel">to: Brad · spawns: M1, M2</text>
+        <path d="M625,104 L625,122 L375,122 L375,138" class="diagram-arrow" />
+        <path d="M625,122 L875,122 L875,138" class="diagram-arrow diagram-arrow--dashed" />
+        <rect x="260" y="140" width="230" height="84" class="diagram-box" />
+        <text x="270" y="158" class="diagram-label">M1 · DESIGN DELIVERABLE</text>
+        <text x="270" y="174" class="diagram-sublabel">does: plan T1…Tn, check values</text>
+        <text x="270" y="187" class="diagram-sublabel">agent: strategy · Fable high</text>
+        <text x="270" y="200" class="diagram-sublabel">reviewer: G1 program · Fable</text>
+        <text x="270" y="213" class="diagram-sublabel">to: P · status: running</text>
+        <rect x="760" y="140" width="230" height="84" class="diagram-box diagram-box--dashed" />
+        <text x="770" y="158" class="diagram-label">M2 · MARKETING (IF NEEDED)</text>
+        <text x="770" y="174" class="diagram-sublabel">does: own strategy, tasks, subtasks</text>
+        <text x="770" y="187" class="diagram-sublabel">agent: strategy · Fable high</text>
+        <text x="770" y="200" class="diagram-sublabel">reviewer: G1 program · Fable</text>
+        <text x="770" y="213" class="diagram-sublabel">to: P · status: not started</text>
+        <path d="M375,224 L375,242 L125,242 L125,258" class="diagram-arrow" />
+        <path d="M375,242 L375,258" class="diagram-arrow" />
+        <path d="M375,242 L625,242 L625,258" class="diagram-arrow" />
+        <rect x="10" y="260" width="230" height="84" class="diagram-box" />
+        <text x="20" y="278" class="diagram-label">T1 · ENVIRONMENT CHECK</text>
+        <text x="20" y="294" class="diagram-sublabel">does: MCP list, versions, plugins</text>
+        <text x="20" y="307" class="diagram-sublabel">agent: T agent · Opus high</text>
+        <text x="20" y="320" class="diagram-sublabel">reviewer: G2 master · Fable</text>
+        <text x="20" y="333" class="diagram-sublabel">to: M1 · PASS 3/3</text>
+        <rect x="260" y="260" width="230" height="84" class="diagram-box" />
+        <text x="270" y="278" class="diagram-label">T2 · COVER TYPOLOGY STUDY</text>
+        <text x="270" y="294" class="diagram-sublabel">does: geometry, sample, optimum</text>
+        <text x="270" y="307" class="diagram-sublabel">agent: T agent · Opus high</text>
+        <text x="270" y="320" class="diagram-sublabel">reviewer: G2 master · Fable</text>
+        <text x="270" y="333" class="diagram-sublabel">to: M1 · running (S2.3)</text>
+        <rect x="510" y="260" width="230" height="84" class="diagram-box" />
+        <text x="520" y="278" class="diagram-label">T3 · REVIEW DECK</text>
+        <text x="520" y="294" class="diagram-sublabel">does: 15-slide deck from T2 values</text>
+        <text x="520" y="307" class="diagram-sublabel">agent: T agent · Opus high</text>
+        <text x="520" y="320" class="diagram-sublabel">reviewer: G2 master · Fable</text>
+        <text x="520" y="333" class="diagram-sublabel">to: M1 · waits on T2</text>
+        <path d="M375,344 L375,362 L125,362 L125,378" class="diagram-arrow" />
+        <path d="M375,362 L375,378" class="diagram-arrow" />
+        <path d="M375,362 L625,362 L625,378" class="diagram-arrow" />
+        <rect x="10" y="380" width="230" height="84" class="diagram-box" />
+        <text x="20" y="398" class="diagram-label">S2.1 · BUILD GH GEOMETRY</text>
+        <text x="20" y="414" class="diagram-sublabel">does: Cover_Lib, GH group, images</text>
+        <text x="20" y="427" class="diagram-sublabel">exec: cs-exec-high · Opus high</text>
+        <text x="20" y="440" class="diagram-sublabel">reviewer: G3 task · Fable high</text>
+        <text x="20" y="453" class="diagram-sublabel">to: T2 · PASS 4/4</text>
+        <rect x="260" y="380" width="230" height="84" class="diagram-box" />
+        <text x="270" y="398" class="diagram-label">S2.2b · LHS SAMPLE (RETRY)</text>
+        <text x="270" y="414" class="diagram-sublabel">does: 2,000-run sample + CSV</text>
+        <text x="270" y="427" class="diagram-sublabel">exec: cs-exec-top · Fable high</text>
+        <text x="270" y="440" class="diagram-sublabel">reviewer: G3 task · Fable high</text>
+        <text x="270" y="453" class="diagram-sublabel">to: T2 · PASS 3/3</text>
+        <rect x="510" y="380" width="230" height="84" class="diagram-box" />
+        <text x="520" y="398" class="diagram-label">S2.3 · TRAIN NN, OPTIMIZE</text>
+        <text x="520" y="414" class="diagram-sublabel">does: MATLAB pipeline, re-simulate</text>
+        <text x="520" y="427" class="diagram-sublabel">exec: cs-exec-high · Opus high</text>
+        <text x="520" y="440" class="diagram-sublabel">reviewer: G3 task · Fable high</text>
+        <text x="520" y="453" class="diagram-sublabel">to: T2 · queued</text>
+        <path d="M375,464 L375,482" class="diagram-arrow diagram-arrow--dashed" />
+        <rect x="260" y="484" width="230" height="72" class="diagram-box diagram-box--dashed" />
+        <text x="270" y="502" class="diagram-label">S2.2 · FIRST RUN · FAIL 2/3</text>
+        <text x="270" y="518" class="diagram-sublabel">exec: cs-exec-high · Opus high</text>
+        <text x="270" y="531" class="diagram-sublabel">reviewer: G3 task · Fable high</text>
+        <text x="270" y="544" class="diagram-sublabel">verdict: check 2 has no value</text>
+        <rect x="790" y="380" width="400" height="168" class="diagram-box diagram-box--dashed" />
+        <text x="805" y="404" class="diagram-label">READING THE CHART</text>
+        <text x="805" y="424" class="diagram-sublabel">Why did S2.2&#x27;s agent and reviewer both miss</text>
+        <text x="805" y="440" class="diagram-sublabel">the check-2 value?</text>
+        <text x="805" y="456" class="diagram-sublabel">The card names both: executor tier, reviewer tier,</text>
+        <text x="805" y="472" class="diagram-sublabel">verdict. The ledger holds their packet and the</text>
+        <text x="805" y="488" class="diagram-sublabel">reviewer brief, so the fix is one of: more context</text>
+        <text x="805" y="504" class="diagram-sublabel">in the packet, better prompting, or a higher tier.</text>
+        <text x="805" y="520" class="diagram-sublabel">Chart is regenerated at every plan revision.</text>
+      </svg>
+      <figcaption>Fig. 04 — The roster chart delivered with the plan; failed first runs stay beside their retry.</figcaption>
+    </figure>
+
+    <div class="section-head">
+      <span class="section-head__title">07 / What it has run</span>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Evidence</span>
+      <p class="field-row__content">The Hybrid Hi-Rise page on this site was produced by a v1 run: a file index of nine text sources, a plan with check values, page copy checked against those sources for numbers, dates and banned strings, an image manifest, a QA pass. The facade cover study ran as a chain of subtasks: geometry library, 2,000-run sample, MATLAB surrogates, re-simulation, renders, a 15-slide deck, each returning a REPORT block and each logged. The progress log for the tower project is the record a reviewer can read without me in the room.</p>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Stakes</span>
+      <p class="field-row__content">The constraint that matters is not model capability. It is what each agent is permitted to know, and who checks the result before the next agent builds on it. Get that wrong and a better model fails faster, with more confidence and in more files. Get it right and the human&#x27;s job moves from catching errors to deciding what the project is for.</p>
+    </div>
+
+    <div class="section-head">
+      <span class="section-head__title">08 / Download</span>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Bundle</span>
+      <p class="field-row__content"><a href="/code-strategy/downloads/code-strategy_v2.0_portable.zip" download>code-strategy_v2.0_portable.zip</a> (34 KB, SHA-256 a7379c1c…0a24b). One skill, nine subagent definitions, five templates, a roster renderer, a permission template and a Stop hook. Portable edition: no personal paths, names or format rules. MIT.</p>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Install</span>
+      <p class="field-row__content">Copy .claude/skills/code-strategy/ to ~/.claude/skills/ and .claude/agents/*.md to ~/.claude/agents/. In a project folder, copy .claude/settings.json, .claude/hooks/ and .code-strategy/, fill the kickoff template, append CLAUDE_snippet.md to CLAUDE.md. Claude Code 2.1 or later.</p>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Run</span>
+      <p class="field-row__content">/code-strategy &lt;brief path&gt;. The session asks every open question one per turn, writes the plan and the roster chart, stops once for approval, then runs to closeout.</p>
+    </div>
+
+    <div class="next-link">
+      <span class="field-label">Method</span>
+      <a href="/agentic-workflows/"><span class="next-link__title">AI &amp; Agentic Workflows →</span></a>
+    </div>
+
+  </div>
+</main>
+
+</body>
+</html>
