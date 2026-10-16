@@ -240,11 +240,7 @@ figcaption,
   color: var(--color-body);
   font-size: 17px;
   line-height: 1.65;
-  max-width: 62ch;
 }
-
-/* v1.2 — Lithoid page runs its prose across the full content column */
-.field-row__content--wide { max-width: none; }
 
 @media (max-width: 900px) {
   .field-row { grid-template-columns: 1fr; gap: 8px; }
@@ -618,12 +614,8 @@ figcaption,
   color: var(--color-body);
   font-size: 19px;
   line-height: 1.6;
-  max-width: 66ch;
   margin-top: 24px;
 }
-
-/* v1.2 — Lithoid page thesis runs across the full content column */
-.page-header__thesis--wide { max-width: none; }
 
 /* Next-project / next-research footer link */
 .next-link {
@@ -748,7 +740,6 @@ figcaption,
   font-size: 16px;
   line-height: 1.65;
   margin-top: 20px;
-  max-width: 54ch;
 }
 
 .diagram-box--human { stroke-width: 2.5; }
